@@ -5,28 +5,35 @@ import json
 # -------------------------
 # Telegram Bot Configuration
 # -------------------------
-API_ID = int(os.getenv("API_ID", ""))          # Telegram API ID
-API_HASH = os.getenv("API_HASH", "")   # Telegram API Hash
+API_ID = int(os.getenv("API_ID", 0))          # Telegram API ID
+API_HASH = os.getenv("API_HASH", "")         # Telegram API Hash
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
-BOT_NAME = "" # WRITE WITHOUT @
-BOT_OWNER = os.getenv("BOT_OWNER", "@SemxyCarders") # Owner username
+BOT_NAME = ""  # WRITE WITHOUT @
+BOT_OWNER = os.getenv("BOT_OWNER", "@SemxyCarders")  # Owner username
 
 # -------------------------
 # Support & Channel
 # -------------------------
 SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "")  # Support chat
-CHANNEL_ID = os.getenv("CHANNEL_ID", "")                # Channel for updates
+CHANNEL_ID = os.getenv("CHANNEL_ID", "")            # Channel for updates
 
 # -------------------------
 # Voice & ElevenLabs
 # -------------------------
-TNC_VOICE_ID = os.getenv("TNC_VOICE_ID", "")   # ElevenLabs voice ID
-ELEVENLABS_API_KEYS = json.loads(os.getenv("ELEVENLABS_API_KEYS, "", ""))  # JSON array of keys
+TNC_VOICE_ID = os.getenv("TNC_VOICE_ID", "")  # ElevenLabs voice ID
+
+# Corrected JSON parsing of multiple keys
+ELEVENLABS_API_KEYS = []
+elevenlabs_env = os.getenv("ELEVENLABS_API_KEYS", "[]")
+try:
+    ELEVENLABS_API_KEYS = json.loads(elevenlabs_env)
+except json.JSONDecodeError:
+    ELEVENLABS_API_KEYS = []
 
 # -------------------------
 # AI APIs
 # -------------------------
-SAMNOVA_API_KEY = os.getenv("SAMNOVA_API_KEY", "")
+SAMBANOVA_API_KEY = os.getenv("SAMBANOVA_API_KEY", "")  # updated
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
