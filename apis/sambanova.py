@@ -1,6 +1,6 @@
 import aiohttp
 import asyncio
-from tnc import config
+import config
 from tnc.log_utils import logger
 
 SAMNOVA_API_URL = "https://api.samnova.ai/v1/chat"  # Replace with correct endpoint
