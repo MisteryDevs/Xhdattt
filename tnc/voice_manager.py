@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 # -----------------------------
 # Configure voice ID
 # -----------------------------
-TNC_VOICE_ID = "YOUR_TNC_VOICE_ID"  # Replace with your ElevenLabs voice ID
+TNC_VOICE_ID = "DnThIAnAgyB5NKBqPQmh"  # Replace with your ElevenLabs voice ID
 
 # -----------------------------
 # Text-to-voice function
