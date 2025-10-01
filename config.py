@@ -34,7 +34,7 @@ except json.JSONDecodeError:
 # AI APIs
 # -------------------------
 SAMBANOVA_API_KEY = os.getenv("SAMBANOVA_API_KEY", "")  # updated
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyCYvLrKc9tduBl_sQZpN9yEd5YQ1waDlMs")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # -------------------------
