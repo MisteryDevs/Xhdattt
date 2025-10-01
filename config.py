@@ -24,7 +24,7 @@ TNC_VOICE_ID = os.getenv("TNC_VOICE_ID", "DnThIAnAgyB5NKBqPQmh")  # ElevenLabs v
 
 # Corrected JSON parsing of multiple keys
 ELEVENLABS_API_KEYS = []
-elevenlabs_env = os.getenv("ELEVENLABS_API_KEYS", '[""]')
+elevenlabs_env = os.getenv("ELEVENLABS_API_KEYS", '["sk_79ce62df7f5c28cf7c65f297d531c41b33429708ec0c6b72"]')
 try:
     ELEVENLABS_API_KEYS = json.loads(elevenlabs_env)
 except json.JSONDecodeError:
