@@ -20,9 +20,9 @@ START_IMAGE_URL = "https://telegra.ph/file/your_start_image_here.png"
 HELP_IMAGE_URL = "https://telegra.ph/file/your_help_image_here.png"
 
 START_CAPTION = (
-    "👋 Hello! I am TNC Bot 🤖\n\n"
-    "I can chat in Hinglish, send voice replies, react with emojis, "
-    "and handle AFK messages.\n\nOwner: {}".format(config.BOT_OWNER)
+    "ʜᴇʟʟᴏ ʙᴀʙᴇ ɪ ᴀᴍ ᴀ ᴄʜᴀᴛ ʙᴏᴛ ᴏғ ᴛɴᴄ\n\n"
+    "ɪ ᴄᴀɴ ᴄʜᴀᴛ ɪɴ ʜɪɴɢʟɪsʜ , sᴇɴᴅ ᴠᴏɪᴄᴇ ʀᴇᴘʟɪᴇs, ʀᴇᴀᴄᴛ ᴡɪᴛʜ ᴇᴍᴏᴊɪs, "
+    "ᴀɴᴅ ʜᴀɴᴅʟᴇ ᴀғᴋ ᴍᴇssᴀɢᴇ.\n\nOwner: {}".format(config.BOT_OWNER)
 )
 
 HELP_CAPTION = (
@@ -39,9 +39,9 @@ HELP_CAPTION = (
 # Inline Buttons
 # -----------------------------
 BUTTONS = InlineKeyboardMarkup([
-    [InlineKeyboardButton("👤 Owner", url=f"https://t.me/{config.BOT_OWNER.lstrip('@')}")],
-    [InlineKeyboardButton("💬 Support Chat", url=f"https://t.me/{config.SUPPORT_CHAT_ID.lstrip('@')}")],
-    [InlineKeyboardButton("📢 Channel", url=f"https://t.me/{config.CHANNEL_ID.lstrip('@')}")]
+    [InlineKeyboardButton("ʙᴀʙʏ 👀", url=f"https://t.me/{config.BOT_OWNER.lstrip('@')}")],
+    [InlineKeyboardButton("💬 sᴜᴘᴘᴏʀᴛ ᴄʜᴀᴛ", url=f"https://t.me/{config.SUPPORT_CHAT_ID.lstrip('@')}")],
+    [InlineKeyboardButton("📢 ᴄʜᴀɴɴᴇʟ", url=f"https://t.me/{config.CHANNEL_ID.lstrip('@')}")]
 ])
 
 # -----------------------------
