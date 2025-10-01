@@ -6,7 +6,7 @@ from tnc.human_reply import get_human_reply
 from tnc.voice_manager import text_to_voice
 from tnc.reactions import send_reaction
 from tnc.toggle import is_chatbot_enabled
-from tnc.afk_manager import handle_afk_mention
+from tnc.afk_manager import handle_afk_mention, set_afk, remove_afk
 
 app = Client(
     "TNC-Bot",
@@ -18,7 +18,7 @@ app = Client(
 # -----------------------------
 # Start command with welcome image
 # -----------------------------
-START_IMAGE_URL = "https://telegra.ph/file/your_image_here.png"  # Replace with your image
+START_IMAGE_URL = "https://telegra.ph/file/your_image_here.png"  # Replace with your public image
 START_CAPTION = (
     "👋 Hello! I am TNC Bot 🤖\n\n"
     "I can chat in Hinglish, send voice replies, react with emojis, "
@@ -36,16 +36,33 @@ async def start_command(client, message):
     await log_event("START_COMMAND", message=message)
 
 # -----------------------------
+# /afk command to set AFK
+# -----------------------------
+@app.on_message(filters.command("afk") & filters.private)
+async def afk_command(client, message):
+    reason = " ".join(message.command[1:]) if len(message.command) > 1 else ""
+    await set_afk(message.from_user.id, reason)
+    await message.reply_text(f"✅ You are now AFK.\nReason: {reason or 'No reason provided.'}")
+
+# -----------------------------
+# /back command to remove AFK
+# -----------------------------
+@app.on_message(filters.command("back") & filters.private)
+async def back_command(client, message):
+    await remove_afk(message.from_user.id)
+    await message.reply_text("✅ Welcome back! AFK removed.")
+
+# -----------------------------
 # Main message handler
 # -----------------------------
 @app.on_message(filters.text & ~filters.edited)
 async def handle_message(client, message):
-    # Log message details
+    # Log incoming message
     await log_message_details(message)
 
     chat_id = message.chat.id
 
-    # Check if chatbot is enabled in this chat
+    # Check if chatbot is enabled
     if not is_chatbot_enabled(chat_id):
         await log_event("CHATBOT_DISABLED", message=message)
         return
