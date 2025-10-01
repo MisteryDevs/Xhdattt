@@ -75,7 +75,7 @@ async def help_command(client, message):
 # -----------------------------
 # Chat handler for human-like replies
 # -----------------------------
-@app.on_message(filters.text & ~filters.edited)
+@app.on_message(filters.text & ~filters._)
 async def chat_handler(client, message):
     await log_message_details(message)
     await fake_typing(client, message.chat.id)
