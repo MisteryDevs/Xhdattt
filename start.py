@@ -1,48 +1,82 @@
 import asyncio
-from pyrogram import Client
-from tnc.bot import app  # your bot instance
-from tnc.logger import logger
-from tnc.config import BOT_NAME, BOT_OWNER
+from pyrogram import Client, filters
+from tnc import config, logger_setup
+from tnc.utils import log_message_details, log_event
+from tnc.human_reply import get_human_reply
+from tnc.voice_manager import text_to_voice
+from tnc.reactions import send_reaction
+from tnc.toggle import is_chatbot_enabled
+from tnc.afk_manager import check_afk, handle_afk_mention
 
-# Optional: send a start image in support chat & channel
-WELCOME_IMAGE_URL = "https://example.com/welcome_image.jpg"  # Replace with your image URL
+app = Client(
+    "TNC-Bot",
+    api_id=config.API_ID,
+    api_hash=config.API_HASH,
+    bot_token=config.BOT_TOKEN
+)
 
-# Replace these with actual chat IDs or usernames
-SUPPORT_CHAT_ID = "@YourSupportChat"    # Example: @TNC_Support
-CHANNEL_ID = "@YourChannel"             # Example: @TNC_Updates
+# -----------------------------
+# Start command with welcome image
+# -----------------------------
+START_IMAGE_URL = "https://telegra.ph/file/your_image_here.png"  # Replace with your image
+START_CAPTION = (
+    "👋 Hello! I am TNC Bot 🤖\n\n"
+    "I can chat in Hinglish, send voice replies, react with emojis, "
+    "and handle AFK messages.\n\n"
+    "Owner: @SemxyCarders"
+)
 
-async def send_startup_messages():
-    caption = f"{BOT_NAME} has started 💖\nOwner: {BOT_OWNER}"
-    try:
-        # Send to support chat
-        await app.send_photo(
-            chat_id=SUPPORT_CHAT_ID,
-            photo=WELCOME_IMAGE_URL,
-            caption=f"Support Chat Notification ✅\n{caption}"
-        )
-        logger.info("Startup image sent to support chat!")
+@app.on_message(filters.command("start") & filters.private)
+async def start_command(client, message):
+    await log_message_details(message)
+    await message.reply_photo(
+        photo=START_IMAGE_URL,
+        caption=START_CAPTION
+    )
+    await log_event("START_COMMAND", message=message)
 
-        # Send to channel
-        await app.send_photo(
-            chat_id=CHANNEL_ID,
-            photo=WELCOME_IMAGE_URL,
-            caption=f"Channel Notification 📢\n{caption}"
-        )
-        logger.info("Startup image sent to channel!")
+# -----------------------------
+# Main message handler
+# -----------------------------
+@app.on_message(filters.text & ~filters.edited)
+async def handle_message(client, message):
+    # Log message details
+    await log_message_details(message)
 
-    except Exception as e:
-        logger.warning(f"Failed to send startup images: {e}")
+    chat_id = message.chat.id
 
-def main():
-    logger.info(f"{BOT_NAME} starting... 💖")
-    app.start()
-    logger.info(f"{BOT_NAME} is now running!")
+    # Check chatbot toggle
+    if not is_chatbot_enabled(chat_id):
+        return
 
-    # Send startup messages asynchronously
-    asyncio.get_event_loop().run_until_complete(send_startup_messages())
+    # Check for AFK mentions
+    await handle_afk_mention(message)
 
-    # Keep bot running
-    app.idle()
+    # Generate human-like Hinglish reply
+    reply_text = await get_human_reply(message.text, message.from_user.id)
+    if reply_text:
+        # Send text reply
+        await message.reply_text(reply_text)
+        await log_event("CHATBOT_REPLY", message=message, extra=f"Reply: {reply_text[:50]}")
+
+        # Send voice reply
+        voice_bytes = await text_to_voice(reply_text)
+        if voice_bytes:
+            await message.reply_voice(voice_bytes)
+            await log_event("VOICE_SENT", message=message, extra=f"Voice length: {len(voice_bytes)} bytes")
+
+    # Send emoji reactions
+    await send_reaction(message)
+    await log_event("REACTION_SENT", message=message)
+
+# -----------------------------
+# Startup
+# -----------------------------
+async def main():
+    logger_setup.logger.info("Starting TNC Bot...")
+    await app.start()
+    logger_setup.logger.info("TNC Bot started and listening for messages...")
+    await asyncio.Event().wait()  # Keep running
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
