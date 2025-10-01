@@ -1,1 +1,9 @@
-
+pyrogram==2.0.106
+tgcrypto==1.2.3
+aiohttp==3.9.4
+openai==0.29.1
+elevenlabs==0.2.1
+pydub==0.25.1
+ffmpeg-python==0.2.0
+SpeechRecognition==3.8.1
+python-dotenv==1.1.0
