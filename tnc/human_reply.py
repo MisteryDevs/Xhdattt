@@ -2,19 +2,19 @@ import asyncio
 import logging
 from tnc.voice_manager import text_to_voice
 from tnc.config import (
-    SAMNOVA_API_KEY,
+    SAMBANOVA_API_KEY,  # updated
     GEMINI_API_KEY,
     OPENAI_API_KEY,
     FAKE_TYPING_DELAY
 )
-from tnc.apis import samnova, gemini, openai_api
+from tnc.apis import sambanova_client, gemini, openai  # updated imports
 
 logger = logging.getLogger(__name__)
 
 async def get_human_reply(user_id: int, text: str):
     """
     Returns a human-like Hinglish response for the user text.
-    Tries Samnova first, then Gemini, then OpenAI.
+    Tries Sambanova first, then Gemini, then OpenAI.
     Also generates voice bytes using ElevenLabs (if configured).
     Simulates fake typing delay before sending reply.
 
@@ -34,14 +34,14 @@ async def get_human_reply(user_id: int, text: str):
     await asyncio.sleep(FAKE_TYPING_DELAY)
 
     # -----------------------------
-    # 1️⃣ Try Samnova API
+    # 1️⃣ Try Sambanova API
     # -----------------------------
     try:
-        reply_text = await samnova.chat(text, user_id, api_key=SAMNOVA_API_KEY, lang="hinglish")
+        reply_text = await sambanova_client.get_reply(text, user_id, api_key=SAMBANOVA_API_KEY, lang="hinglish")
         if reply_text:
-            logger.info(f"[Samnova] Reply generated for user {user_id}")
+            logger.info(f"[Sambanova] Reply generated for user {user_id}")
     except Exception as e:
-        logger.warning(f"[Samnova] Failed: {e}")
+        logger.warning(f"[Sambanova] Failed: {e}")
 
     # -----------------------------
     # 2️⃣ Fallback to Gemini API
@@ -60,7 +60,7 @@ async def get_human_reply(user_id: int, text: str):
     # -----------------------------
     if not reply_text:
         try:
-            reply_text = await openai_api.chat_with_openai(text, api_key=OPENAI_API_KEY, lang="hinglish")
+            reply_text = await openai.chat_with_openai(text, api_key=OPENAI_API_KEY, lang="hinglish")
             if reply_text:
                 logger.info(f"[OpenAI] Reply generated for user {user_id}")
         except Exception as e:
