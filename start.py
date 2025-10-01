@@ -1,7 +1,7 @@
 import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from tnc import config
+from tnc.config import BOT_NAME, API_ID, API_HASH, BOT_TOKEN, LOG_FILE, LOG_LEVEL
 from tnc.log_utils import log_message_details, log_event
 from tnc.human_reply import get_human_reply
 from tnc.voice_manager import text_to_voice
