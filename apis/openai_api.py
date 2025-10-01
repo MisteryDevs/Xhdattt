@@ -1,6 +1,6 @@
 import openai
 import logging
-from .config import OPENAI_API_KEY
+from config import OPENAI_API_KEY
 
 logger = logging.getLogger(__name__)
 openai.api_key = OPENAI_API_KEY
