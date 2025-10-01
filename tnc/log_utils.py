@@ -1,8 +1,6 @@
 import logging
 from tnc import logger
 
-logger = logger_setup.logger
-
 async def log_message_details(message):
     """
     Logs detailed info about who sent the message, in which chat,
