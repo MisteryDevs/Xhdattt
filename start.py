@@ -1,12 +1,12 @@
 import asyncio
 from pyrogram import Client, filters
 from tnc import config, logger_setup
-from tnc.utils import log_message_details, log_event
+from tnc.log_utils import log_message_details, log_event
 from tnc.human_reply import get_human_reply
 from tnc.voice_manager import text_to_voice
 from tnc.reactions import send_reaction
 from tnc.toggle import is_chatbot_enabled
-from tnc.afk_manager import check_afk, handle_afk_mention
+from tnc.afk_manager import handle_afk_mention
 
 app = Client(
     "TNC-Bot",
@@ -45,11 +45,12 @@ async def handle_message(client, message):
 
     chat_id = message.chat.id
 
-    # Check chatbot toggle
+    # Check if chatbot is enabled in this chat
     if not is_chatbot_enabled(chat_id):
+        await log_event("CHATBOT_DISABLED", message=message)
         return
 
-    # Check for AFK mentions
+    # Handle AFK mentions
     await handle_afk_mention(message)
 
     # Generate human-like Hinglish reply
@@ -76,7 +77,7 @@ async def main():
     logger_setup.logger.info("Starting TNC Bot...")
     await app.start()
     logger_setup.logger.info("TNC Bot started and listening for messages...")
-    await asyncio.Event().wait()  # Keep running
+    await asyncio.Event().wait()  # Keep the bot running
 
 if __name__ == "__main__":
     asyncio.run(main())
