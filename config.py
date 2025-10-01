@@ -35,7 +35,7 @@ except json.JSONDecodeError:
 # -------------------------
 SAMBANOVA_API_KEY = os.getenv("SAMBANOVA_API_KEY", "41c87b5d-4a4d-4a8f-9544-48d9bfc9b06a")  # updated
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyCYvLrKc9tduBl_sQZpN9yEd5YQ1waDlMs")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "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")
 
 # -------------------------
 # Logging Configuration
