@@ -9,3 +9,4 @@ SpeechRecognition==3.8.1
 python-dotenv==1.1.0
 requests
 pydantic<2.0
+IPython 
