@@ -8,7 +8,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import config and bot utilities
-from tnc.config import BOT_NAME, API_ID, API_HASH, BOT_TOKEN, BOT_OWNER, SUPPORT_CHAT_ID, CHANNEL_ID, FAKE_TYPING_DELAY
+from config import BOT_NAME, API_ID, API_HASH, BOT_TOKEN, BOT_OWNER, SUPPORT_CHAT_ID, CHANNEL_ID, FAKE_TYPING_DELAY
 from tnc.log_utils import log_message_details, log_event
 from tnc.human_reply import get_human_reply
 from tnc.voice_manager import text_to_voice
@@ -26,8 +26,8 @@ app = Client(
 # -----------------------------
 # Start & Help Images & Captions
 # -----------------------------
-START_IMAGE_URL = "https://telegra.ph/file/your_start_image_here.png"
-HELP_IMAGE_URL = "https://telegra.ph/file/your_help_image_here.png"
+START_IMAGE_URL = "https://files.catbox.moe/ytmqz3.jpg"
+HELP_IMAGE_URL = "https://files.catbox.moe/4dtfwd.jpg"
 
 START_CAPTION = (
     f"ʜᴇʟʟᴏ! I am a chat bot of TNC.\n\nOwner: {BOT_OWNER}"
