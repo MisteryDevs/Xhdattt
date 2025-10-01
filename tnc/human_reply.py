@@ -1,8 +1,13 @@
 import asyncio
 import logging
-from tnc.config import FAKE_TYPING_DELAY
-from tnc.apis import samnova, gemini, openai_api
 from tnc.voice_manager import text_to_voice
+from tnc.config import (
+    SAMNOVA_API_KEY,
+    GEMINI_API_KEY,
+    OPENAI_API_KEY,
+    FAKE_TYPING_DELAY
+)
+from tnc.apis import samnova, gemini, openai_api
 
 logger = logging.getLogger(__name__)
 
@@ -14,12 +19,14 @@ async def get_human_reply(user_id: int, text: str):
     Returns a human-like response for the user text.
     Tries Samnova first, then Gemini, then OpenAI.
     Also generates voice bytes if ElevenLabs API is configured.
+    Simulates fake typing delay before sending reply.
     """
+
     reply_text = None
     audio_bytes = None
 
     # -----------------------------
-    # Fake typing simulation
+    # Fake typing delay
     # -----------------------------
     await asyncio.sleep(FAKE_TYPING_DELAY)
 
@@ -27,7 +34,7 @@ async def get_human_reply(user_id: int, text: str):
     # 1️⃣ Try Samnova API
     # -----------------------------
     try:
-        reply_text = await samnova.chat(text, user_id)
+        reply_text = await samnova.chat(text, user_id, api_key=SAMNOVA_API_KEY)
         if reply_text:
             logger.info(f"[Samnova] Reply generated for user {user_id}")
     except Exception as e:
@@ -38,18 +45,19 @@ async def get_human_reply(user_id: int, text: str):
     # -----------------------------
     if not reply_text:
         try:
-            reply_text = await gemini.GeminiClient().chat(text)
+            gem_client = gemini.GeminiClient(api_key=GEMINI_API_KEY)
+            reply_text = await gem_client.chat(text)
             if reply_text:
                 logger.info(f"[Gemini] Reply generated for user {user_id}")
         except Exception as e:
             logger.warning(f"[Gemini] Failed: {e}")
 
     # -----------------------------
-    # 3️⃣ Fallback to OpenAI
+    # 3️⃣ Fallback to OpenAI API
     # -----------------------------
     if not reply_text:
         try:
-            reply_text = await openai_api.chat_with_openai(text)
+            reply_text = await openai_api.chat_with_openai(text, api_key=OPENAI_API_KEY)
             if reply_text:
                 logger.info(f"[OpenAI] Reply generated for user {user_id}")
         except Exception as e:
