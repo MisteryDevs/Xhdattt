@@ -5,9 +5,9 @@ import json
 # -------------------------
 # Telegram Bot Configuration
 # -------------------------
-API_ID = int(os.getenv("API_ID", "123456"))          # Telegram API ID
-API_HASH = os.getenv("API_HASH", "your_api_hash")   # Telegram API Hash
-BOT_TOKEN = os.getenv("BOT_TOKEN", "your_bot_token")
+API_ID = int(os.getenv("API_ID", ""))          # Telegram API ID
+API_HASH = os.getenv("", "your_api_hash")   # Telegram API Hash
+BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 BOT_NAME = "TNC-Bot"
 BOT_OWNER = os.getenv("BOT_OWNER", "@SemxyCarders") # Owner username
 
@@ -20,8 +20,8 @@ CHANNEL_ID = os.getenv("CHANNEL_ID", "@YourChannel")                # Channel fo
 # -------------------------
 # Voice & ElevenLabs
 # -------------------------
-TNC_VOICE_ID = os.getenv("TNC_VOICE_ID", "your_voice_id")   # ElevenLabs voice ID
-ELEVENLABS_API_KEYS = json.loads(os.getenv("ELEVENLABS_API_KEYS", '[]'))  # JSON array of keys
+TNC_VOICE_ID = os.getenv("TNC_VOICE_ID", "")   # ElevenLabs voice ID
+ELEVENLABS_API_KEYS = json.loads(os.getenv("ELEVENLABS_API_KEYS, "", ""))  # JSON array of keys
 
 # -------------------------
 # AI APIs
