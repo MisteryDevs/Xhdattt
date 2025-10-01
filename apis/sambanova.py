@@ -4,7 +4,7 @@ import config
 from tnc.log_utils import logger
 
 SAMNOVA_API_URL = "https://api.samnova.ai/v1/chat"  # Replace with correct endpoint
-API_KEY = config.SAMNOVA_API_KEY  # Make sure this is set in your config
+API_KEY = config.SAMBANOVA_API_KEY  # Make sure this is set in your config
 
 async def get_samnova_reply(message_text: str, user_id: int = None) -> str:
     """
