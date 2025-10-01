@@ -1,87 +1,116 @@
-import random
 import asyncio
-from tnc.config import SAMNOVA_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, logger
-import aiohttp
-import json
+import random
+import logging
+from tnc.voice_manager import text_to_voice
+from tnc.log_utils import log_message
+from apis import samnova, gemini, openai_api
+import config  # Import API keys and settings
 
 # -----------------------------
-# Samnova API (Hinglish)
+# Logger configuration
 # -----------------------------
-async def samnova_reply(prompt: str, user_id: int) -> str:
-    prompt = f"Reply in friendly Hinglish: {prompt}"
+logger = logging.getLogger(__name__)
+
+# Initialize API clients with keys from config
+samnova_client = samnova.SamnovaClient(api_key=config.SAMNOVA_API_KEY)
+gemini_client = gemini.GeminiClient(api_key=config.GEMINI_API_KEY)
+openai_api_key = config.OPENAI_API_KEY
+
+# -----------------------------
+# Fake typing simulation
+# -----------------------------
+async def fake_typing(user_id: int, message_text: str, min_delay: float = 0.5, max_delay: float = 1.5):
+    """
+    Simulate human typing delay based on message length.
+    """
+    delay = random.uniform(min_delay, max_delay) + len(message_text) * 0.05
+    await asyncio.sleep(delay)
+
+# -----------------------------
+# Multi-API reply router
+# -----------------------------
+async def get_mixed_reply(user_id: int, message_text: str) -> str:
+    """
+    Try Samnova → Gemini → OpenAI and return first successful reply.
+    """
+    # 1️⃣ Try Samnova
     try:
-        async with aiohttp.ClientSession() as session:
-            headers = {"Authorization": f"Bearer {SAMNOVA_API_KEY}"}
-            payload = {"prompt": prompt, "user_id": user_id}
-            async with session.post("https://api.samnova.ai/chat", json=payload, headers=headers) as resp:
-                if resp.status == 200:
-                    data = await resp.json()
-                    return data.get("reply", "")
+        reply = await samnova_client.get_reply(message_text)
+        if reply:
+            return reply
     except Exception as e:
-        logger.warning(f"Samnova API error: {e}")
-    return None
+        logger.warning(f"[API_ROUTER] Samnova failed: {e}")
 
-# -----------------------------
-# Gemini API (Hinglish)
-# -----------------------------
-async def gemini_reply(prompt: str, user_id: int) -> str:
-    prompt = f"Reply in friendly Hinglish: {prompt}"
+    # 2️⃣ Try Gemini
     try:
-        async with aiohttp.ClientSession() as session:
-            headers = {"Authorization": f"Bearer {GEMINI_API_KEY}"}
-            payload = {"prompt": prompt, "user_id": user_id}
-            async with session.post("https://api.gemini.ai/v1/chat", json=payload, headers=headers) as resp:
-                if resp.status == 200:
-                    data = await resp.json()
-                    return data.get("reply", "")
+        reply = await gemini_client.chat(message_text)
+        if reply:
+            return reply
     except Exception as e:
-        logger.warning(f"Gemini API error: {e}")
-    return None
+        logger.warning(f"[API_ROUTER] Gemini failed: {e}")
 
-# -----------------------------
-# OpenAI API (Hinglish)
-# -----------------------------
-async def openai_reply(prompt: str, user_id: int) -> str:
-    prompt = f"Reply in friendly Hinglish: {prompt}"
+    # 3️⃣ Try OpenAI
     try:
         import openai
-        openai.api_key = OPENAI_API_KEY
-        response = await openai.ChatCompletion.acreate(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
-            user=str(user_id)
+        openai.api_key = openai_api_key
+        completion = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": message_text}],
+            temperature=0.7,
+            max_tokens=200
         )
-        return response.choices[0].message.content.strip()
+        reply = completion.choices[0].message.content
+        if reply:
+            return reply
     except Exception as e:
-        logger.warning(f"OpenAI API error: {e}")
-    return None
+        logger.warning(f"[API_ROUTER] OpenAI failed: {e}")
+
+    # 4️⃣ Fallback reply
+    fallback = random.choice([
+        "Hmm… mujhe samajh nahi aaya 😅",
+        "Arey yaar, thoda confuse ho gaya 🤔",
+        "Oops! Something went wrong 😶"
+    ])
+    return fallback
 
 # -----------------------------
-# Main human-like reply
+# Main function: human-like reply
 # -----------------------------
-async def get_human_reply(prompt: str, user_id: int) -> str:
+async def get_human_reply(user_id: int, message_text: str):
     """
-    Tries Samnova → Gemini → OpenAI → fallback.
-    Returns a Hinglish string reply for the user.
+    Returns text + voice reply using multi-API routing with Hinglish output.
     """
-    reply = await samnova_reply(prompt, user_id)
-    if reply:
-        return reply
+    try:
+        # 1️⃣ Fake typing simulation
+        await fake_typing(user_id, message_text)
 
-    reply = await gemini_reply(prompt, user_id)
-    if reply:
-        return reply
+        # 2️⃣ Get reply from multi-API router
+        reply_text = await get_mixed_reply(user_id, message_text)
 
-    reply = await openai_reply(prompt, user_id)
-    if reply:
-        return reply
+        # 3️⃣ Log the conversation
+        log_message(user_id=user_id, user_message=message_text, bot_reply=reply_text)
 
-    # Fallback generic Hinglish replies
-    fallback_replies = [
-        "Arey wah 😏, ye toh interesting hai!",
-        "Accha? Batao aur 😜",
-        "Hmm, samajh gaya 😅, aur bolo",
-        "Haha really? Batao thoda aur 💖",
-        "Kya baat hai! 😎"
-    ]
-    return random.choice(fallback_replies)
+        # 4️⃣ Generate voice using ElevenLabs
+        audio_bytes = await text_to_voice(reply_text)
+
+        return reply_text, audio_bytes
+
+    except Exception as e:
+        logger.error(f"[HUMAN_REPLY] Failed to generate reply: {e}")
+        fallback_reply = "Hmm… mujhe samajh nahi aaya 😅"
+        return fallback_reply, None
+
+# -----------------------------
+# Optional: Quick test
+# -----------------------------
+if __name__ == "__main__":
+    import asyncio
+
+    async def test():
+        user_id = 12345
+        message = "Hey, kya haal hai?"
+        text, audio = await get_human_reply(user_id, message)
+        print("Text Reply:", text)
+        print("Voice Bytes Length:", len(audio) if audio else 0)
+
+    asyncio.run(test())
