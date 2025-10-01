@@ -5,7 +5,7 @@ including voice conversion and async key rotation.
 
 import logging
 from elevenlabs.client import AsyncElevenLabs
-from . import config
+import config
 import asyncio
 
 logger = logging.getLogger(__name__)
