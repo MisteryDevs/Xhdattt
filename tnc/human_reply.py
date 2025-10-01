@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from tnc.voice_manager import text_to_voice
-from tnc.config import (
+from .config import (
     SAMBANOVA_API_KEY,  # updated
     GEMINI_API_KEY,
     OPENAI_API_KEY,
