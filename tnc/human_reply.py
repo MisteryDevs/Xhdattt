@@ -7,8 +7,8 @@ from config import (
     OPENAI_API_KEY,
     FAKE_TYPING_DELAY
 )
-from tnc.apis import sambanova_client, gemini, openai  # updated imports
-
+# from tnc.apis import sambanova_client, gemini, openai  # updated imports
+from apis import sambanova_client, gemini, openai
 logger = logging.getLogger(__name__)
 
 async def get_human_reply(user_id: int, text: str):
