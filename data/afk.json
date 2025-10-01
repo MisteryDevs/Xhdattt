@@ -1,1 +1,22 @@
-
+{
+    "users": {
+        "123456789": {
+            "is_afk": true,
+            "reason": "Sleeping 😴",
+            "since": "2025-10-01T10:00:00"
+        },
+        "987654321": {
+            "is_afk": false,
+            "reason": "",
+            "since": ""
+        }
+    },
+    "chats": {
+        "-1001234567890": {
+            "afk_enabled": true
+        },
+        "-1009876543210": {
+            "afk_enabled": false
+        }
+    }
+}
