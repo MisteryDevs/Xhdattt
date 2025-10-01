@@ -5,7 +5,7 @@ from pyrogram import Client
 # -------------------------
 # Relative import of config
 # -------------------------
-from .config import BOT_NAME, API_ID, API_HASH, BOT_TOKEN, LOG_FILE, LOG_LEVEL
+from config import BOT_NAME, API_ID, API_HASH, BOT_TOKEN, LOG_FILE, LOG_LEVEL
 
 # -------------------------
 # Logging configuration
