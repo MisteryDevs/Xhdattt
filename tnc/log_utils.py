@@ -1,5 +1,5 @@
 import logging
-from tnc import logger_setup
+from tnc import logger
 
 logger = logger_setup.logger
 
