@@ -20,7 +20,7 @@ CHANNEL_ID = os.getenv("CHANNEL_ID", "TNCmeetup")            # Channel for updat
 # -------------------------
 # Voice & ElevenLabs
 # -------------------------
-TNC_VOICE_ID = os.getenv("TNC_VOICE_ID", "")  # ElevenLabs voice ID
+TNC_VOICE_ID = os.getenv("TNC_VOICE_ID", "DnThIAnAgyB5NKBqPQmh")  # ElevenLabs voice ID
 
 # Corrected JSON parsing of multiple keys
 ELEVENLABS_API_KEYS = []
