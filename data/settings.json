@@ -1,1 +1,19 @@
-
+{
+    "chats": {
+        "-1001234567890": {
+            "chatbot_enabled": true,
+            "reactions_enabled": true,
+            "afk_enabled": true
+        },
+        "-1009876543210": {
+            "chatbot_enabled": false,
+            "reactions_enabled": false,
+            "afk_enabled": false
+        },
+        "123456789": {
+            "chatbot_enabled": true,
+            "reactions_enabled": true,
+            "afk_enabled": true
+        }
+    }
+}
