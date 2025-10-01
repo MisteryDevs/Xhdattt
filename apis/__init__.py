@@ -1,35 +1,21 @@
-"""
-Initialize all external API clients here:
-- Sambanova API
-- Gemini API
-- ElevenLabs API
-- OpenAI API
-"""
+# apis/__init__.py
 
 import openai
-from .sambanova import SambanovaClient  # replaced samnova -> sambanova
+from .sambanova import SambanovaClient
 from .gemini import GeminiClient
 from .elevenlabs import ElevenLabsClient
+import config
 
-# -------------------------
-# API Keys (replace with your actual keys)
-# -------------------------
-SAMBANOVA_KEY = "YOUR_SAMBANOVA_KEY"  # updated
-GEMINI_KEY = "YOUR_GEMINI_KEY"
-OPENAI_KEY = "YOUR_OPENAI_KEY"
-
-# -------------------------
 # Initialize clients
-# -------------------------
-sambanova_client = SambanovaClient(api_key=SAMBANOVA_KEY)  # updated
-gemini_client = GeminiClient(api_key=GEMINI_KEY)
-elevenlabs_client = ElevenLabsClient()  # Use via voice_manager.py
+sambanova_client = SambanovaClient(api_key=config.SAMBANOVA_API_KEY)
+gemini_client = GeminiClient(api_key=config.GEMINI_API_KEY)
+elevenlabs_client = ElevenLabsClient()
 
 # OpenAI setup
-openai.api_key = OPENAI_KEY
+openai.api_key = config.OPENAI_API_KEY
 
 __all__ = [
-    "sambanova_client",  # updated
+    "sambanova_client",
     "gemini_client",
     "elevenlabs_client",
     "openai"
