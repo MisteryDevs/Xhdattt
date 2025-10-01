@@ -1,7 +1,11 @@
-from pyrogram import Client
-from tnc.config import BOT_NAME, API_ID, API_HASH, BOT_TOKEN, LOG_FILE, LOG_LEVEL
 import logging
 import os
+from pyrogram import Client
+
+# -------------------------
+# Relative import of config
+# -------------------------
+from .config import BOT_NAME, API_ID, API_HASH, BOT_TOKEN, LOG_FILE, LOG_LEVEL
 
 # -------------------------
 # Logging configuration
@@ -10,17 +14,20 @@ logger = logging.getLogger(BOT_NAME)
 logger.setLevel(LOG_LEVEL)
 formatter = logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s")
 
-# Console handler
+# Console handler (stdout)
 ch = logging.StreamHandler()
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-# Optional: log to file (Heroku free dyno storage is ephemeral, so use stdout primarily)
-if not os.path.exists("tnc/logs"):
-    os.makedirs("tnc/logs")
+# File handler (optional: Heroku dyno storage is ephemeral)
+log_dir = "tnc/logs"
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
 fh = logging.FileHandler(LOG_FILE)
 fh.setFormatter(formatter)
 logger.addHandler(fh)
+
+logger.info(f"{BOT_NAME} logging initialized!")
 
 # -------------------------
 # Pyrogram client setup
@@ -31,7 +38,7 @@ app = Client(
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
     parse_mode="html",
-    in_memory=True  # Optional: keeps session in memory for free dynos
+    in_memory=True  # keeps session in memory for ephemeral dynos
 )
 
 logger.info(f"{BOT_NAME} Pyrogram client initialized successfully!")
