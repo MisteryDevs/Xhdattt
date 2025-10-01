@@ -2,7 +2,7 @@ from pyrogram import filters
 from tnc import app, logger
 from tnc.afk_manager import set_afk, remove_afk
 from tnc.toggle import enable_chatbot, disable_chatbot
-from tnc.config import BOT_OWNER
+from config import BOT_OWNER
 
 # -----------------------------
 # /start command
