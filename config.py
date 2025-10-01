@@ -6,16 +6,16 @@ import json
 # Telegram Bot Configuration
 # -------------------------
 API_ID = int(os.getenv("API_ID", ""))          # Telegram API ID
-API_HASH = os.getenv("", "your_api_hash")   # Telegram API Hash
+API_HASH = os.getenv("API_HASH", "")   # Telegram API Hash
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
-BOT_NAME = "TNC-Bot"
+BOT_NAME = "" # WRITE WITHOUT @
 BOT_OWNER = os.getenv("BOT_OWNER", "@SemxyCarders") # Owner username
 
 # -------------------------
 # Support & Channel
 # -------------------------
-SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "@YourSupportChat")  # Support chat
-CHANNEL_ID = os.getenv("CHANNEL_ID", "@YourChannel")                # Channel for updates
+SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "")  # Support chat
+CHANNEL_ID = os.getenv("CHANNEL_ID", "")                # Channel for updates
 
 # -------------------------
 # Voice & ElevenLabs
@@ -26,9 +26,9 @@ ELEVENLABS_API_KEYS = json.loads(os.getenv("ELEVENLABS_API_KEYS, "", ""))  # JSO
 # -------------------------
 # AI APIs
 # -------------------------
-SAMNOVA_API_KEY = os.getenv("SAMNOVA_API_KEY", "your_samnova_key")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "your_gemini_key")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your_openai_key")
+SAMNOVA_API_KEY = os.getenv("SAMNOVA_API_KEY", "")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # -------------------------
 # Logging Configuration
