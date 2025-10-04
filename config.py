@@ -9,13 +9,13 @@ API_ID = int(os.getenv("API_ID", "22657083"))          # Telegram API ID
 API_HASH = os.getenv("API_HASH", "d6186691704bd901bdab275ceaab88f3")  # Telegram API Hash
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 BOT_NAME = "WaifuxGraber_bot"  # WRITE WITHOUT @
-BOT_OWNER = os.getenv("BOT_OWNER", "@SemxyCarders")  # Owner username
+BOT_OWNER = os.getenv("BOT_OWNER", "@Rishu1286")  # Owner username
 
 # -------------------------
 # Support & Channel
 # -------------------------
-SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "TechNodeCoders")  # Support chat
-CHANNEL_ID = os.getenv("CHANNEL_ID", "TNCmeetup")                 # Channel for updates
+SUPPORT_CHAT_ID = os.getenv("SUPPORT_CHAT_ID", "ur_support07")  # Support chat
+CHANNEL_ID = os.getenv("CHANNEL_ID", "Nenobots")                 # Channel for updates
 
 # -------------------------
 # Voice & ElevenLabs
